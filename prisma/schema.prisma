@@ -9,21 +9,23 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id         String      @id @default(uuid())
-  email      String      @unique
-  name       String?
-  progress   Progress[]  // Tracks progress of roadmaps
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  email         String     @unique
+  username      String  
+  password      String
+  role          Role       @default(STUDENT)
+  progress      Progress[]  // Tracks progress of roadmaps
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 
 model Roadmap {
-  id          String      @id @default(uuid())
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   topics      Topic[]     // List of topics associated with the roadmap
@@ -33,34 +35,34 @@ model Roadmap {
 }
 
 model Topic {
-  id              String      @id @default(uuid())
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
   title           String
   description     String
   roadmap         Roadmap     @relation(fields: [roadmapId], references: [id])
   topicProgress   TopicProgress[]
   resources       Resource[]
-  roadmapId       String
+  roadmapId       String  @db.ObjectId
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 }
 
 model Resource {
-  id          String     @id @default(uuid())
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
   videoUrl    String?
   driveLink   String?
   blogLink    String?
   topic       Topic     @relation(fields: [topicId], references: [id])
-  topicId     String
+  topicId     String    @db.ObjectId
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
 
 model Progress {
-  id              String   @id @default(uuid())
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
   user            User     @relation(fields: [userId], references: [id])
-  userId          String
+  userId          String   @db.ObjectId
   roadmap         Roadmap  @relation(fields: [roadmapId], references: [id])
-  roadmapId       String
+  roadmapId       String   @db.ObjectId
   percentage      Float    @default(0) // Progress percentage
   completedTopics TopicProgress[]      // Tracks completed topics
   createdAt       DateTime @default(now())
@@ -68,11 +70,16 @@ model Progress {
 }
 
 model TopicProgress {
-  id        String   @id @default(uuid())
-  topic     Topic    @relation(fields: [topicId], references: [id])
-  topicId   String
-  progress  Progress @relation(fields: [progressId], references: [id])
-  progressId String
-  isDone    Boolean  @default(false) // Whether the topic is marked as done
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  topic     Topic       @relation(fields: [topicId], references: [id])
+  topicId   String     @db.ObjectId
+  progress  Progress    @relation(fields: [progressId], references: [id])
+  progressId String    @db.ObjectId
+  isDone    Boolean     @default(false) // Whether the topic is marked as done
   completedAt DateTime?
+}
+
+enum Role {
+  ADMIN
+  STUDENT
 }
