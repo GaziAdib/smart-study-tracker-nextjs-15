@@ -3,6 +3,9 @@ import "./globals.css";
 import { Providers } from "./providers";
 import Navbar from "./components/navbar/Navbar";
 
+import  {SidebarProvider, SidebarTrigger} from '@/components/ui/sidebar'
+
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
