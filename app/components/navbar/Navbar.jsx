@@ -26,6 +26,7 @@ const Navbar = () => {
             </div>
             <div className="hidden mt-2 sm:ml-6 sm:flex sm:space-x-8">
               <Link href="/" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
+              <Link href="/create-roadmap" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Create Roadmap</Link>
               <Link href="/" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Admin</Link>
 
               {session?.data?.user == undefined &&  <>

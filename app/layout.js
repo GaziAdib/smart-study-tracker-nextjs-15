@@ -2,8 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "./providers";
 import Navbar from "./components/navbar/Navbar";
-
-import  {SidebarProvider, SidebarTrigger} from '@/components/ui/sidebar'
+import ToasterProvider from "./ToastProvider";
 
 
 const geistSans = localFont({
@@ -30,6 +29,7 @@ export default function RootLayout({ children }) {
       >
         <Providers>
             <Navbar />
+            <ToasterProvider />
             <div className="my-10">
               {children}
             </div>

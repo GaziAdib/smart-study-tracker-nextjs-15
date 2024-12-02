@@ -12,6 +12,8 @@ export async function POST(req) {
 
     const {  title, description, thumbnailUrl  }  =  await req.json();
 
+    console.log({title, description, thumbnailUrl})
+
     try {
         if (session?.user?.role === 'ADMIN') {
 
