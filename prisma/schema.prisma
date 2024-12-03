@@ -39,10 +39,13 @@ model Roadmap {
   authorId     String    @db.ObjectId
   author       User?     @relation(fields: [authorId], references: [id])
   thumbnailUrl String?
-  topics      Topic[]     // List of topics associated with the roadmap
-  progress    Progress[]  // Tracks progress of users on this roadmap
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  category     String
+  tags         String[]     
+  topics       Topic[]     // List of topics associated with the roadmap
+  progress     Progress[]  // Tracks progress of users on this roadmap
+  published    Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
 model Topic {

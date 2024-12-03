@@ -10,9 +10,9 @@ export async function POST(req) {
 
     const session = await getServerSession(authOptions);
 
-    const {  title, description, thumbnailUrl  }  =  await req.json();
+    const {  title, description, thumbnailUrl, tags, category  }  =  await req.json();
 
-    console.log({title, description, thumbnailUrl})
+    console.log({title, description, thumbnailUrl, category, tags})
 
     try {
         if (session?.user?.role === 'ADMIN') {
@@ -21,6 +21,8 @@ export async function POST(req) {
             const roadmap = await prisma.roadmap.create({
                 data: {
                     title: title,
+                    category: category,
+                    tags: tags,
                     description: description ? description : '',
                     thumbnailUrl: thumbnailUrl ? thumbnailUrl : '',
                     author: {connect: {id: session?.user?.id}},
