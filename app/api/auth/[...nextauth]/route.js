@@ -303,7 +303,7 @@ export const authOptions = {
 };
 
 const handler = async (req, res) => {
-  const { cookies } = req;
+  const { cookies } = await req;
   // Await cookies or headers if used dynamically
   await Promise.all([
     cookies.getAll(), // Await dynamic cookie retrieval

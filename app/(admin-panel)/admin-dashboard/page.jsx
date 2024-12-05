@@ -4,13 +4,13 @@
 import RoadmapCard from "@/app/components/admin/cards/RoadmapCard";
 import Search from "@/app/components/searchBox/Search";
 
-
+//http://localhost:3000/api/admin/roadmap
 
 const fetchAllRoadmaps = async (query = '') => {
   try {
 
     // Construct the URL with query parameters
-    const baseUrl = 'http://localhost:3000/api/admin/roadmap';
+    const baseUrl = `${process.env.NEXT_ROOT_URL}/api/admin/roadmap`;
     const url = new URL(baseUrl);
 
     // if query is available
