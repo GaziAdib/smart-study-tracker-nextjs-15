@@ -30,8 +30,6 @@ const fetchAllRoadmaps = async (query = '') => {
 
     if (res.ok) {
       const roadmaps = await res.json();
-
-      console.log('Roadmaps --- ', roadmaps)
       return roadmaps.data; // Return products data
     } else {
       console.log('Failed to fetch roadmaps');
@@ -44,22 +42,16 @@ const fetchAllRoadmaps = async (query = '') => {
 };
 
 
-
-
 const AdminDashboard = async ({ searchParams }) => {
 
   const { query } = await searchParams
 
-    console.log('query', query);
+  console.log('query', query);
 
   const roadmaps = await fetchAllRoadmaps(query);
 
-   console.log('roadmaps', roadmaps);
+  console.log('roadmaps', roadmaps);
 
-   
-  
-
-   
   return (
     <div>
         <h1 className="text-3xl text-center px-8 my-10 py-8 text-blue-200">Hi, Admin Dashboard</h1>

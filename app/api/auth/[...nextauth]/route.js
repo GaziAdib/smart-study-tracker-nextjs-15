@@ -217,6 +217,9 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 
+// import { cookies } from 'next/headers'
+
+
 const prisma = new PrismaClient();
 
 export const authOptions = {
@@ -302,13 +305,17 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-const handler = async (req, res) => {
-  const { cookies } = await req;
-  // Await cookies or headers if used dynamically
-  await Promise.all([
-    cookies.getAll(), // Await dynamic cookie retrieval
-  ]);
-  return NextAuth(req, res, authOptions);
-};
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+
+// const handler = async (req, res) => {
+//   const cookies = await cookies()
+//   // Await cookies or headers if used dynamically
+//   await Promise.all([
+//     co // Await dynamic cookie retrieval
+//   ]);
+//   return NextAuth(req, res, authOptions);
+// };
+
+// export { handler as GET, handler as POST };

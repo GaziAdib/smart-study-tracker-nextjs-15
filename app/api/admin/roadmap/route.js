@@ -6,8 +6,7 @@ const prisma = new PrismaClient();
 export async function GET(req) {
 
 
-    const queryTitle = req.nextUrl.searchParams.get("query") || '';
-
+    const queryTitle = await req.nextUrl.searchParams.get("query") || '';
 
     try {
         
@@ -19,10 +18,9 @@ export async function GET(req) {
                           mode: "insensitive",  // Optional: makes the search case-insensitive
                       },
                   }
-                : { }, // No filter applied if `title` is not provided
+            : { }, // No filter applied if `title` is not provided
         });
 
-    
         return NextResponse.json({ message: 'All Roadmaps!', data: roadmaps }, { status: 200 })
             
     } catch (error) {

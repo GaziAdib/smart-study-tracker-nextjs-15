@@ -14,8 +14,9 @@ const {id, title, description, thumbnailUrl, createdAt } = roadmap || {};
 
   const handleDelete =  async (roadmapId) => {
 
+
       try {
-        const res = await fetch(`http://localhost:3000/api/admin/roadmap/remove-roadmap/${roadmapId}`, {
+        const res = await fetch(`${process.env.NEXT_ROOT_URL}/api/admin/roadmap/remove-roadmap/${roadmapId}`, {
             method: "DELETE",
             cache: 'no-store',
             
