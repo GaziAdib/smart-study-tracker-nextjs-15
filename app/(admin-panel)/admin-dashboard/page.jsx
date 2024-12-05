@@ -6,25 +6,17 @@ import Search from "@/app/components/searchBox/Search";
 
 
 
-
-
 const fetchAllRoadmaps = async (query = '') => {
   try {
+
     // Construct the URL with query parameters
     const baseUrl = 'http://localhost:3000/api/admin/roadmap';
     const url = new URL(baseUrl);
 
+    // if query is available
     if (query) {
       url.searchParams.append('query', query); // Add query filter
     }
-
-    // if (sortField) {
-    //   url.searchParams.append('sort_field', sortField); // Add sort field
-    // }
-
-    // if (sortOrder) {
-    //   url.searchParams.append('sort_order', sortOrder); // Add sort order
-    // }
 
     // Fetch data
     const res = await fetch(url, {
@@ -32,7 +24,8 @@ const fetchAllRoadmaps = async (query = '') => {
       headers: {
         'Content-Type': 'application/json',
       },
-      cache: 'no-store', // Prevent caching for real-time updates
+      // cache: 'force-cache'
+      // cache: 'no-store', // Prevent caching for real-time updates
     });
 
     if (res.ok) {
@@ -82,3 +75,12 @@ const AdminDashboard = async ({ searchParams }) => {
 }
 
 export default AdminDashboard
+
+
+ // if (sortField) {
+    //   url.searchParams.append('sort_field', sortField); // Add sort field
+    // }
+
+    // if (sortOrder) {
+    //   url.searchParams.append('sort_order', sortOrder); // Add sort order
+    // }

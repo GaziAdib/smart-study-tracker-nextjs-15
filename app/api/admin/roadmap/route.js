@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 export async function GET(req) {
 
-    //const session = await getServerSession(authOptions);
 
     const queryTitle = req.nextUrl.searchParams.get("query") || '';
 

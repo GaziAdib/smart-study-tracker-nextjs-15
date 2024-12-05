@@ -37,7 +37,7 @@ model Roadmap {
   title        String
   description  String?
   authorId     String    @db.ObjectId
-  author       User?     @relation(fields: [authorId], references: [id])
+  author       User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   thumbnailUrl String?
   category     String
   tags         String[]     
@@ -53,10 +53,10 @@ model Topic {
   title           String
   description     String?
   thumbnailUrl    String?  
-  roadmap         Roadmap     @relation(fields: [roadmapId], references: [id])
+  roadmap         Roadmap     @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
   resources       Resource[]
-  authorId        String    @db.ObjectId
-  author          User?     @relation(fields: [authorId], references: [id])
+  authorId        String      @db.ObjectId
+  author          User?       @relation(fields: [authorId], references: [id])
   isDone          Boolean     @default(false)
   roadmapId       String      @db.ObjectId
   createdAt       DateTime    @default(now())
@@ -68,7 +68,7 @@ model Resource {
   videoLink   String?
   driveLink   String?
   blogLink    String?
-  topic       Topic     @relation(fields: [topicId], references: [id])
+  topic       Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
   topicId     String    @db.ObjectId
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
