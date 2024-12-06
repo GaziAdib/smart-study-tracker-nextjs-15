@@ -26,8 +26,8 @@ export async function PUT(req, {params}) {
                     title: title,
                     category: category,
                     tags: tags,
-                    description: description ? description : '',
-                    thumbnailUrl: thumbnailUrl ? thumbnailUrl : '',
+                    description: description,
+                    thumbnailUrl: thumbnailUrl,
                     author: {connect: {id: session?.user?.id}},
                 }
             })

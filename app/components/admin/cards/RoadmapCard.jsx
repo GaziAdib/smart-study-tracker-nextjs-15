@@ -55,7 +55,7 @@ const RoadmapCard = ({ roadmap }) => {
   };
 
   return (
-    <Card className="w-full sm:w-auto bg-gray-800 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow relative">
+    <Card className="w-full sm:w-auto bg-gray-900 border-l-2 border-gray-600 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow relative">
       {/* Card Header */}
       <CardHeader>
         <img
