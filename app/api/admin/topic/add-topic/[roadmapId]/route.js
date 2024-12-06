@@ -10,9 +10,11 @@ export async function POST(req, {params}) {
 
     const session = await getServerSession(authOptions);
 
-    const roadmapId = await params?.roadmapId || '';
+    const { roadmapId } = await params;
 
-    const { title, description, thumbnailUrl } = await req.json();
+    const { title, description } = await req.json();
+
+    console.log({title, description})
 
 
     try {
@@ -23,18 +25,17 @@ export async function POST(req, {params}) {
                 data: {
                     title: title,
                     description: description,
-                    thumbnailUrl: thumbnailUrl ? thumbnailUrl : '',
                     author: {connect: {id: session?.user?.id}},
                     roadmap: {connect: {id: roadmapId}},
                 }
             })
 
-            revalidatePath('/create-topic');
+            revalidatePath(`/roadmap-detail/${roadmapId}`);
 
-            return NextResponse.json({ message: 'Roadmap Added Successfully!', data: roadmap }, { status: 201 })
+            return NextResponse.json({ message: 'New Topic Added Successfully!', data: roadmap }, { status: 201 })
             
         } else {
-            return NextResponse.json({ message: 'You Must Be a Auth User To Add Roadmap' }, { status: 403 })
+            return NextResponse.json({ message: 'You Must Be a Auth User To Add Topic' }, { status: 403 })
         }
 
     } catch (error) {
