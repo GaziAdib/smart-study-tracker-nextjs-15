@@ -24,7 +24,7 @@ const fetchAllRoadmaps = async (query = '') => {
       headers: {
         'Content-Type': 'application/json',
       },
-      // cache: 'force-cache'
+      //cache: 'force-cache'
       // cache: 'no-store', // Prevent caching for real-time updates
     });
 
@@ -46,7 +46,6 @@ const AdminDashboard = async ({ searchParams }) => {
 
   const { query } = await searchParams
 
-  console.log('query', query);
 
   const roadmaps = await fetchAllRoadmaps(query);
 
