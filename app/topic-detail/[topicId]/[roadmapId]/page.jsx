@@ -99,7 +99,7 @@ const fetchTopicDetail = async (roadmapId, topicId) => {
 
               
               {/* Title */}
-              <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+              <h2 className="text-xl lg:text-2xl md:text-xl font-bold text-gray-800 dark:text-gray-100">
                 {title || "Untitled Topic"}
                 
               </h2>
