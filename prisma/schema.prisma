@@ -68,6 +68,9 @@ model Resource {
   videoLink   String?
   driveLink   String?
   blogLink    String?
+  imageLink   String?
+  pdfLink     String?
+  shortNote   String?
   topic       Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
   topicId     String    @db.ObjectId
   createdAt   DateTime  @default(now())

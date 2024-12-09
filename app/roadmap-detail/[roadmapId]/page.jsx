@@ -33,7 +33,7 @@ const fetchRoadmapDetail = async (id) => {
 
   const RoadMapDetail = async ({ params }) => {
 
-    const { roadmapId } = params;
+    const { roadmapId } = await params;
   
     const roadmap = await fetchRoadmapDetail(roadmapId);
   
@@ -116,6 +116,7 @@ const fetchRoadmapDetail = async (id) => {
               <AddTopicForm roadmapId={id}/>
             </div>
 
+            
         {/* Left Below : Show Listings Topics */}
             <div className="showlistings my-5 py-5">
              <h2 className="text-xl sm:text-2xl font-bold text-center">
@@ -124,7 +125,7 @@ const fetchRoadmapDetail = async (id) => {
 
               <div className="container mx-2 my-5 py-5">
                 {topics?.length > 0 && topics?.map((topic) => {
-                    return <TopicCard key={topic.id} topic={topic} />
+                    return <TopicCard key={topic.id} roadmapId={roadmapId} topic={topic} />
                 })}
             </div>
 
