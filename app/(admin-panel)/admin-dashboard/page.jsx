@@ -2,11 +2,13 @@
 // show all the roadmaps listing in cards grids views
 
 import RoadmapCard from "@/app/components/admin/cards/RoadmapCard";
+import CategoryFilter from "@/app/components/filter/CategoryFilter";
+import SortFilter from "@/app/components/filter/SortFilter";
 import Search from "@/app/components/searchBox/Search";
 
 //http://localhost:3000/api/admin/roadmap
 
-const fetchAllRoadmaps = async (query = '') => {
+const fetchAllRoadmaps = async (query = '', sortBy='', categoryBy='') => {
   try {
 
     // Construct the URL with query parameters
@@ -16,6 +18,14 @@ const fetchAllRoadmaps = async (query = '') => {
     // if query is available
     if (query) {
       url.searchParams.append('query', query); // Add query filter
+    }
+
+    if (sortBy) {
+      url.searchParams.append('sortBy', sortBy); // Add query filter
+    }
+
+    if (categoryBy) {
+      url.searchParams.append('categoryBy', categoryBy); // Add query filter
     }
 
     // Fetch data
@@ -44,24 +54,34 @@ const fetchAllRoadmaps = async (query = '') => {
 
 const AdminDashboard = async ({ searchParams }) => {
 
-  const { query } = await searchParams
+  const { query, sortBy, categoryBy } = await searchParams
 
+  const roadmaps = await fetchAllRoadmaps(query, sortBy, categoryBy);
 
-  const roadmaps = await fetchAllRoadmaps(query);
+  const categories = roadmaps?.map((roadmap) => roadmap?.category);
 
-  console.log('roadmaps', roadmaps);
 
   return (
-    <div>
-        <h1 className="text-3xl text-center px-8 my-10 py-8 text-blue-200">Hi, Admin Dashboard</h1>
-
-        <Search />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-5 mb-5 px-4 py-5">
-          {roadmaps?.length > 0 && roadmaps?.map((roadmap) => {
-             return <RoadmapCard key={roadmap.id} roadmap={roadmap} />
-          })}
-      </div>
+    <div className="container my-5 py-5 mx-auto">
+      <h1 className="text-3xl text-center px-8 my-10 py-8 text-blue-200">
+        Hi, Admin Dashboard
+      </h1>
+  
+    {/* Responsive container for filters */}
+    <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-4 py-2">
+      <Search />
+      <SortFilter />
+      <CategoryFilter categories={categories} />
     </div>
+  
+    {/* Roadmaps grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center justify-items-center gap-4 mt-5 mb-5 px-4 py-5">
+      {roadmaps?.length > 0 &&
+        roadmaps?.map((roadmap) => {
+          return <RoadmapCard key={roadmap.id} roadmap={roadmap} />;
+        })}
+    </div>
+  </div>
   )
 }
 
