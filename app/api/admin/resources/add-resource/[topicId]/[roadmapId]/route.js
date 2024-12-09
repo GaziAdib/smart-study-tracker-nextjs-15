@@ -29,7 +29,7 @@ export async function POST(req, {params}) {
                 }
             })
 
-            revalidatePath(`/roadmap-detail/${roadmapId}`);
+            revalidatePath(`/topic-detail/${topicId}/${roadmapId}`);
 
             return NextResponse.json({ message: 'New Resource Added Successfully!', data: resource }, { status: 201 })
             

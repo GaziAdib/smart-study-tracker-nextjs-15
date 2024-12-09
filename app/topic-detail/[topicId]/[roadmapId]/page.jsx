@@ -1,5 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import ResourceCard from "../../../components/admin/cards/ResourceCard";
+import AddResourceForm from "@/app/components/admin/forms/AddResourceForm";
+import { getUserInitials } from "@/app/utils/getUserNameInitials";
 
 const fetchTopicDetail = async (roadmapId, topicId) => {
     try {
@@ -30,22 +32,18 @@ const fetchTopicDetail = async (roadmapId, topicId) => {
   };
 
 
+
   const TopicDetailPage = async ({ params }) => {
 
     const { roadmapId, topicId } = await params;
 
-  
     const topic = await fetchTopicDetail(roadmapId, topicId);
 
-    console.log('topicDetail', topic);
-
-
-    const { id, title, description, createdAt  } =
-      topic || {};
+    const { id, title, description, createdAt  } =  topic || {};
   
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 px-4 py-8">
-        <div className="container mx-auto">
+        <div className="container my-10 mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left Side: Details */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
@@ -62,9 +60,10 @@ const fetchTopicDetail = async (roadmapId, topicId) => {
               </div>
   
               {/* Title */}
+
               <h1 className="text-2xl sm:text-4xl font-bold mt-6 text-center">
-                {title}{" "}
-                <span className="font-extrabold text-purple-500">Topic</span>
+                {topic?.roadmap?.title}{" "}
+                <span className="font-extrabold text-purple-500">(RoadMap)</span>
               </h1>
   
        
@@ -79,47 +78,69 @@ const fetchTopicDetail = async (roadmapId, topicId) => {
                   📅 {createdAt ? new Date(createdAt).toISOString().substring(0,10) : "N/A"}
                 </p>
               </div>
+
+              <div className="relative flex items-center bg-white border-l-4 border-gray-600 my-5 px-4 py-4 w-full dark:bg-gray-900 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                {/* Index */}
+                <div className="absolute left-3 top-3 mt-4 flex items-center justify-center w-10 h-10 bg-gray-200 text-gray-800 font-bold rounded-full border border-gray-400 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600">
+                  {getUserInitials(topic?.author?.username)}
+                </div>
+
+                
+
+
+        {/* Vertical Divider */}
+        <div className="h-16 ml-12 w-px bg-gray-300 dark:bg-gray-600"></div>
+          
+     
+        {/* Content with Divider */}
+          <div className="flex items-center ml-5 space-x-4">
+            {/* Main Content */}
+            <div>
+
+              
+              {/* Title */}
+              <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                {title || "Untitled Topic"}
+                
+              </h2>
               {/* Description */}
-              {/* <p className="mt-6 text-justify  text-gray-700 dark:text-gray-300">
-                {topic?.roadmap?.description || "No description available for this roadmap."}
-              </p> 
-  
-              {/* Tags */}
-              <div className="mt-8">
-                {/* <h3 className="text-lg font-semibold text-center mb-4">Tags</h3> */}
-                {topic?.roadmap?.tags?.length > 0 ? (
-                  <div className="flex flex-wrap justify-center gap-2">
-                   {topic?.roadmap?.tags?.length > 0 && topic?.roadmap?.tags?.map((tag, index) => {
-                    return <span
-                    key={index}
-                    className="px-2 py-2  bg-gray-600 text-slate-200 mx-1 text-xs sm:text-sm font-medium rounded-full border-2 shadow-md"
-                >
-                    {tag}
-                </span>
-                    })}
-                  </div>
-                ) : (
-                  <p className="text-center text-gray-500 dark:text-gray-400">
-                    No tags available.
-                  </p>
-                )}
-              </div>
+              <p className="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                {description || "No description available for this topic."}
+              </p>
             </div>
+      
+          </div>
+            </div>
+
+             
+            </div>
+
+       
+            <div className="resource-add-form">
+              <AddResourceForm roadmapId={roadmapId} topicId={id}  />
+            </div>    
+       
 
             
         {/* Left Below : Show Listings Topics */}
-            <div className="showlistings my-5 py-5">
+            <div className="showlistings w-full  my-2 py-2">
              <h2 className="text-xl sm:text-2xl font-bold text-center">
-                All Resources Listing
+              {topic?.resources?.length > 0 ? 'Resources' : 'No Resources Available Yet!'}
               </h2>
 
-              <div className="container mx-2 my-5 py-5">
-                {topic?.resources?.length > 0 && topic?.resources?.map((resource) => {
-                    return <ResourceCard key={resource?.id} resource={resource} />
+              <div className="my-2 py-2">
+                {topic?.resources?.length > 0 && topic?.resources?.map((resource, index) => {
+                    return <ResourceCard key={resource?.id} index={index} topic={topic}  resource={resource} />
                 })}
             </div>
 
             </div>
+
+
+          
+
+
+            
   
           </div>
         </div>

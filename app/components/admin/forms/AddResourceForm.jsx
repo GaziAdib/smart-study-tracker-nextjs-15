@@ -19,12 +19,12 @@ import {
 
 // Zod validation schema
 const resourceSchema = z.object({
-  shortNote: z.string().optional(),
-  videoLink: z.string().url("Must be a valid URL").optional(),
-  driveLink: z.string().url("Must be a valid URL").optional(),
-  blogLink: z.string().url("Must be a valid URL").optional(),
-  imageLink: z.string().url("Must be a valid URL").optional(),
-  pdfLink: z.string().url("Must be a valid URL").optional(),
+    shortNote: z.string().optional(),
+    videoLink: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+    driveLink: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+    blogLink: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+    imageLink: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+    pdfLink: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 });
 
 const AddResourceForm = ({ topicId, roadmapId }) => {
@@ -65,7 +65,7 @@ const AddResourceForm = ({ topicId, roadmapId }) => {
       });
 
       if (response.ok) {
-        router.push(`/roadmap-detail/${roadmapId}`);
+        router.push(`/topic-detail/${topicId}/${roadmapId}`);
         toast.success("Resource added successfully!");
         form.reset();
       } else {
@@ -81,7 +81,7 @@ const AddResourceForm = ({ topicId, roadmapId }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 my-8 py-8 mx-auto px-6 max-w-2xl border-2 border-gray-600 rounded-lg shadow-lg"
+        className="space-y-6  py-8 mx-auto px-6 max-w-2xl border-2 border-gray-600 rounded-lg shadow-lg"
       >
         
       

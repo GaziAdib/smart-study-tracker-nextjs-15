@@ -124,8 +124,8 @@ const fetchRoadmapDetail = async (id) => {
               </h2>
 
               <div className="container mx-2 my-5 py-5">
-                {topics?.length > 0 && topics?.map((topic) => {
-                    return <TopicCard key={topic.id} roadmapId={roadmapId} topic={topic} />
+                {topics?.length > 0 && topics?.map((topic, index) => {
+                    return <TopicCard key={topic.id} index={index} roadmapId={roadmapId} topic={topic} />
                 })}
             </div>
 
