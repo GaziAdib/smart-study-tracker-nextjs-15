@@ -136,12 +136,6 @@ const fetchTopicDetail = async (roadmapId, topicId) => {
 
             </div>
 
-
-          
-
-
-            
-  
           </div>
         </div>
       </div>
