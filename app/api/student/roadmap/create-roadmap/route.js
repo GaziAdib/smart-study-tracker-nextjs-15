@@ -15,8 +15,7 @@ export async function POST(req) {
     console.log({title, description, thumbnailUrl, category, tags})
 
     try {
-        if (session?.user?.role === 'ADMIN') {
-
+        if (session?.user?.role === 'STUDENT') {
 
             const roadmap = await prisma.roadmap.create({
                 data: {
@@ -29,7 +28,7 @@ export async function POST(req) {
                 }
             })
 
-            revalidatePath('/admin-create-roadmap');
+            revalidatePath('/create-roadmap');
 
             return NextResponse.json({ message: 'Roadmap Added Successfully!', data: roadmap }, { status: 201 })
             

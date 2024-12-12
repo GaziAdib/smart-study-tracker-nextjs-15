@@ -37,11 +37,8 @@ const { roadmapId } = await params;
 
 const roadmap = await fetchRoadmapDetail(roadmapId);
 
-console.log('roadmap details', roadmap);
-  
 
 
-   
 return (
 
 <div className="flex items-center justify-center min-h-screen">

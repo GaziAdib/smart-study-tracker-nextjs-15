@@ -15,7 +15,7 @@ const fetchAllRoadmaps = async (query = '', sortBy='', categoryBy='') => {
   try {
 
     // Construct the URL with query parameters
-    const baseUrl = `${process.env.NEXT_ROOT_URL}/api/admin/roadmap`;
+    const baseUrl = `${process.env.NEXT_ROOT_URL}/api/student/roadmap`;
     const url = new URL(baseUrl);
 
     // if query is available

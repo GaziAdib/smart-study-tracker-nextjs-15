@@ -19,17 +19,21 @@ import {
   AiOutlineDelete,
 } from "react-icons/ai"; // Icons
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 
 const RoadmapCard = ({ roadmap }) => {
-  const { id, title, description, category, tags, thumbnailUrl, createdAt } = roadmap || {};
-
-  console.log('topics', tags);
+  const { id, authorId, title, description, category, tags, thumbnailUrl, createdAt } = roadmap || {};
 
   const router = useRouter();
 
+  const session = useSession()
+  // making the api dynamic for 'Student' & 'Admin' and admin and student bot have theirn own api for delete routes
+  const userRole = session?.data?.user?.role.toLowerCase();
+
   const handleDelete = async (roadmapId) => {
+
     try {
-      const res = await fetch(`http://localhost:3000/api/admin/roadmap/remove-roadmap/${roadmapId}`, {
+      const res = await fetch(`http://localhost:3000/api/${userRole}/roadmap/remove-roadmap/${roadmapId}`, {
         method: "DELETE",
         cache: "no-store",
       });
@@ -71,6 +75,13 @@ const RoadmapCard = ({ roadmap }) => {
 
       {/* Card Content */}
       <CardContent className="p-4">
+        {
+            session?.data?.user?.id == roadmap?.authorId
+            && <Badge className="bg-green-900 text-white rounded-xl my-1" variant={"default"}>
+            {'Author 🧑'}
+          </Badge>
+          }
+          
         <p className="text-sm my-2 text-gray-400">
           📅 {new Date(createdAt).toLocaleDateString()}
         </p>
@@ -80,6 +91,7 @@ const RoadmapCard = ({ roadmap }) => {
           <Badge className="bg-gray-200 rounded-xl" variant={"default"}>
             {category}
           </Badge>
+
         </div>
         <div className="my-1 py-1">
             {tags?.length > 0 && tags?.map((tag, index) => {
@@ -135,19 +147,23 @@ const RoadmapCard = ({ roadmap }) => {
                   </button>
                 )}
               </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className={`${
-                      active ? "bg-gray-700" : ""
-                    } flex items-center w-full px-4 py-2 text-sm text-red-500`}
-                  >
-                    <AiOutlineDelete className="mr-2" />
-                    Delete
-                  </button>
-                )}
-              </Menu.Item>
+              {
+              (session?.data?.user?.id === authorId || session?.data?.user?.role === 'ADMIN') && (
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className={`${
+                        active ? "bg-gray-700" : ""
+                      } flex items-center w-full px-4 py-2 text-sm text-red-500`}
+                    >
+                      <AiOutlineDelete className="mr-2" />
+                      Delete
+                    </button>
+                  )}
+                </Menu.Item>
+              )
+            }
             </Menu.Items>
           </Menu>
         </div>

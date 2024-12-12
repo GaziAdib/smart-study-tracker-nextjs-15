@@ -31,7 +31,7 @@ const roadmapSchema = z.object({
   category: z.string().min(1, "Please select a category"), // Ensure a category is selected
 });
 
-const AddRoadMapForm = () => {
+const AddRoadMapForm = ({userRole}) => {
 
   const router = useRouter();
 
@@ -85,7 +85,7 @@ const AddRoadMapForm = () => {
     // using try catch blogs wot watch for future
 
     try {
-      const response = await fetch("/api/admin/roadmap/create-roadmap", {
+      const response = await fetch(`/api/${userRole}/roadmap/create-roadmap`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json", 
@@ -94,7 +94,7 @@ const AddRoadMapForm = () => {
       });
 
       if(response.ok) {
-         router.push('/')
+         userRole === 'admin' ? router.push('/admin-dashboard') : router.push('/student-dashboard')
          toast.success('Roadmap created successfully!')
          form.reset();
       }
