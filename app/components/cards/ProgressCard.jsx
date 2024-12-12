@@ -26,7 +26,7 @@ const ProgressCard = ({ topics, completedTopics, userId, percentage }) => {
           </div>
           <div className="flex items-center justify-between">
             <span className="text-lg font-semibold">Percentage:</span>
-            <span>{Math.round(percentage)}%</span>
+            <span>{Math.round((completedTopics?.length / topics?.length) * 100)}%</span>
           </div>
             {/* Progress Bar */}
             <div className="mt-4">
@@ -35,9 +35,9 @@ const ProgressCard = ({ topics, completedTopics, userId, percentage }) => {
                 {/* Filled Bar */}
                 <div
                     className="bg-green-500 h-6 ml-l rounded-full flex items-center justify-center text-xs font-semibold text-white dark:text-gray-200"
-                    style={{ width: `${Math.min(Math.round(percentage), 100)}%` }} // Prevent width > 100%
+                    style={{ width: `${Math.round((completedTopics?.length / topics?.length) * 100)}%` }} // Prevent width > 100%
                 >
-                    {Math.round(percentage)}% {/* Display rounded percentage */}
+                    {Math.round((completedTopics?.length / topics?.length) * 100)}% {/* Display rounded percentage */}
                 </div>
             </div>
             </div>
