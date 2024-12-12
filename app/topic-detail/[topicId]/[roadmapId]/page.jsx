@@ -2,6 +2,8 @@ import { Badge } from "@/components/ui/badge";
 import ResourceCard from "../../../components/admin/cards/ResourceCard";
 import AddResourceForm from "@/app/components/admin/forms/AddResourceForm";
 import { getUserInitials } from "@/app/utils/getUserNameInitials";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const fetchTopicDetail = async (roadmapId, topicId) => {
     try {
@@ -33,13 +35,19 @@ const fetchTopicDetail = async (roadmapId, topicId) => {
 
 
 
-  const TopicDetailPage = async ({ params }) => {
+  const TopicDetailPage = async ({ params, searchParams }) => {
 
     const { roadmapId, topicId } = await params;
 
+    const { isTopicPresent } = await searchParams;
+
     const topic = await fetchTopicDetail(roadmapId, topicId);
 
-    const { id, title, description, createdAt  } =  topic || {};
+    const { id, title, description, createdAt } =  topic || {};
+  
+
+    //  ${isTopicPresent ? 'border-2 border-green-600 rounded-xl w-full px-2 py-2' : ''}
+    // we can collect data from topic listings page to topic detail page easily with link props
   
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 px-4 py-8">
@@ -93,23 +101,29 @@ const fetchTopicDetail = async (roadmapId, topicId) => {
           
      
         {/* Content with Divider */}
-          <div className="flex items-center ml-5 space-x-4">
-            {/* Main Content */}
-            <div>
+            <div className={`flex items-center ml-5 ${isTopicPresent ? 'border-2 border-green-600 rounded-xl w-full px-2 py-2' : ''}  space-x-4`}>
+              {/* Main Content */}
+              <div>
 
-              
-              {/* Title */}
-              <h2 className="text-xl lg:text-2xl md:text-xl font-bold text-gray-800 dark:text-gray-100">
-                {title || "Untitled Topic"}
                 
-              </h2>
-              {/* Description */}
-              <p className="mt-2 text-gray-600 dark:text-gray-300 text-sm">
-                {description || "No description available for this topic."}
-              </p>
+                {/* Title */}
+                <h2 className="text-xl lg:text-2xl md:text-xl font-bold text-gray-800 dark:text-gray-100">
+                  {title || "Untitled Topic"}
+                  
+                </h2>
+                {/* Description */}
+                <p className="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                  {description || "No description available for this topic."}
+                </p>
+
+                <p className="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                  {isTopicPresent ? 'Done ✅' : ''}
+                </p>
+
+  
+              </div>
+        
             </div>
-      
-          </div>
             </div>
 
              

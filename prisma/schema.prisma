@@ -83,6 +83,7 @@ model Progress {
   userId          String   @db.ObjectId
   roadmap         Roadmap  @relation(fields: [roadmapId], references: [id])
   roadmapId       String   @db.ObjectId
+  completedTopics String[] // Array of topic IDs completed by the user for this roadmap
   percentage      Float    @default(0) // Progress percentage based on how many topics completed / total topics to cover
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

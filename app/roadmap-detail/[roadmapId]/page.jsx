@@ -1,6 +1,9 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import TopicCard from "@/app/components/admin/cards/TopicCard";
 import AddTopicForm from "@/app/components/admin/forms/AddTopicForm";
+import ProgressCard from "@/app/components/cards/ProgressCard";
 import { Badge } from "@/components/ui/badge";
+import { getServerSession } from "next-auth";
 
 const fetchRoadmapDetail = async (id) => {
     try {
@@ -34,12 +37,21 @@ const fetchRoadmapDetail = async (id) => {
   const RoadMapDetail = async ({ params }) => {
 
     const { roadmapId } = await params;
+    const session = await getServerSession(authOptions);
   
     const roadmap = await fetchRoadmapDetail(roadmapId);
   
     const { id, title, description, thumbnailUrl, category, tags, createdAt, topics } =
       roadmap || {};
   
+    // progress information for each user
+
+    //const userRoadmapBasedProgress = roadmap.progress?.find((progress) => progress.roadmapId === id)
+
+    const userRoadmapBasedProgress = roadmap.progress?.find((progress) => progress?.userId === session?.user?.id)
+
+    const { completedTopics, userId, percentage } = userRoadmapBasedProgress || {}
+
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 px-4 py-8">
         <div className="container mx-auto">
@@ -119,13 +131,16 @@ const fetchRoadmapDetail = async (id) => {
             
         {/* Left Below : Show Listings Topics */}
             <div className="showlistings my-5 py-5">
+              
              <h2 className="text-xl sm:text-2xl font-bold text-center">
-                All Topics Listings
+                All Topics Listings ({topics?.length})
               </h2>
+
+             <ProgressCard completedTopics={completedTopics} percentage={percentage} topics={topics} userId={userId} />
 
               <div className="container mx-2 my-5 py-5">
                 {topics?.length > 0 && topics?.map((topic, index) => {
-                    return <TopicCard key={topic.id} index={index} roadmapId={roadmapId} topic={topic} />
+                    return <TopicCard key={topic.id} userRoadmapBasedProgress={userRoadmapBasedProgress} index={index} roadmapId={roadmapId} topic={topic} />
                 })}
             </div>
 

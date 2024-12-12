@@ -17,11 +17,13 @@ export async function GET(req, {params}) {
             include: {
                 resources: true,
                 author: true,
-                roadmap: true
+                roadmap: {
+                    include: {
+                        progress: true
+                    }
+                }
             }
         })
-
-        console.log('Topic Detail', topic);
        
         return NextResponse.json({ message: 'Topic Detail', data: topic }, { status: 200 })
             
