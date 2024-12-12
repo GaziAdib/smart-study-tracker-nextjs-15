@@ -55,14 +55,14 @@ const fetchAllRoadmaps = async (query = '', sortBy='', categoryBy='') => {
 };
 
 
-const AdminDashboard = async ({ searchParams }) => {
+const StudentDashboard = async ({searchParams}) => {
 
-  // block admin-dashboard for students user
+  //  for students user
 
   const session = await getServerSession(authOptions);
 
-  if(session?.user?.role === 'STUDENT') {
-    return redirect('/student-dashboard');
+  if(!session) {
+    return redirect('/login')
   }
 
   const { query, sortBy, categoryBy } = await searchParams
@@ -75,7 +75,7 @@ const AdminDashboard = async ({ searchParams }) => {
   return (
     <div className="container my-5 py-5 mx-auto">
       <h1 className="text-3xl text-center px-8 my-10 py-8 text-blue-200">
-        Hi, Admin Dashboard
+        Hi, Student Dashboard
       </h1>
   
     {/* Responsive container for filters */}
@@ -96,13 +96,5 @@ const AdminDashboard = async ({ searchParams }) => {
   )
 }
 
-export default AdminDashboard
+export default StudentDashboard
 
-
- // if (sortField) {
-    //   url.searchParams.append('sort_field', sortField); // Add sort field
-    // }
-
-    // if (sortOrder) {
-    //   url.searchParams.append('sort_order', sortOrder); // Add sort order
-    // }
