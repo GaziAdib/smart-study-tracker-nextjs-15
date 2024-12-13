@@ -1,10 +1,17 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import AddRoadMapForm from "@/app/components/admin/forms/AddRoadMapForm"
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 const AddRoadmapPage = async () => {
 
+
   const session = await getServerSession(authOptions);
+
+  if(!session) {
+    return redirect('/login')
+  }
+
 
   const userRole =  session?.user?.role?.toLowerCase();
 

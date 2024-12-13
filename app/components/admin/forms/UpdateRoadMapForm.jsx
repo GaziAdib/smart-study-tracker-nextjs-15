@@ -31,7 +31,8 @@ const roadmapSchema = z.object({
   category: z.string().min(1, "Please select a category"), // Ensure a category is selected
 });
 
-const UpdateRoadMapForm = ({roadmap}) => {
+const UpdateRoadMapForm = ({roadmap, userRole}) => {
+
  
  const {id, title, description, thumbnailUrl, category, tags:roadmapTags } = roadmap || {};
 
@@ -87,19 +88,23 @@ const UpdateRoadMapForm = ({roadmap}) => {
 
 
     try {
-      const response = await fetch(`/api/admin/roadmap/update-roadmap/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json", 
-        },
-        body: JSON.stringify(roadmapData),
-      });
 
-      if(response.ok) {
-         router.push('/admin-dashboard')
-         toast.success('Roadmap Updated successfully!')
-         form.reset();
+      if(userRole) {
+        const response = await fetch(`/api/${userRole}/roadmap/update-roadmap/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json", 
+          },
+          body: JSON.stringify(roadmapData),
+        });
+  
+        if(response.ok) {
+           userRole === 'admin' ? router.push('/admin-dashboard') : router.push('/student-dashboard')
+           toast.success('Roadmap Updated successfully!')
+           form.reset();
+        }
       }
+      
 
     } catch (error) {
       console.log("Error adding roadmap:", error);

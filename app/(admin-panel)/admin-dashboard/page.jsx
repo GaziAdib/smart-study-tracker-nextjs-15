@@ -61,8 +61,8 @@ const AdminDashboard = async ({ searchParams }) => {
 
   const session = await getServerSession(authOptions);
 
-  if(session?.user?.role === 'STUDENT') {
-    return redirect('/student-dashboard');
+  if(session?.user?.role !== 'ADMIN') {
+    return redirect('/login');
   }
 
   const { query, sortBy, categoryBy } = await searchParams
@@ -75,7 +75,7 @@ const AdminDashboard = async ({ searchParams }) => {
   return (
     <div className="container my-5 py-5 mx-auto">
       <h1 className="text-3xl text-center px-8 my-10 py-8 text-blue-200">
-        Hi, Admin Dashboard
+        Hi, Admin ({session?.user?.username}) Dashboard
       </h1>
   
     {/* Responsive container for filters */}

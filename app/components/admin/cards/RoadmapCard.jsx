@@ -51,7 +51,7 @@ const RoadmapCard = ({ roadmap }) => {
   };
 
   const handleUpdate = (roadmapId) => {
-    router.push(`/update-roadmap/${roadmapId}`);
+    session?.data?.user?.role === 'ADMIN' ? router.push(`/admin-update-roadmap/${roadmapId}`) : router.push(`/update-roadmap/${roadmapId}`)
   };
 
   const handleViewDetails = (roadmapId) => {
@@ -134,7 +134,9 @@ const RoadmapCard = ({ roadmap }) => {
                   </button>
                 )}
               </Menu.Item>
-              <Menu.Item>
+             {
+              (session?.data?.user?.id === authorId || session?.data?.user?.role === 'ADMIN') && (
+                <Menu.Item>
                 {({ active }) => (
                   <button
                     onClick={() => handleUpdate(id)}
@@ -147,6 +149,8 @@ const RoadmapCard = ({ roadmap }) => {
                   </button>
                 )}
               </Menu.Item>
+              )
+             }
               {
               (session?.data?.user?.id === authorId || session?.data?.user?.role === 'ADMIN') && (
                 <Menu.Item>

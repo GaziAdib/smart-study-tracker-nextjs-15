@@ -1,4 +1,6 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import UpdateRoadMapForm from "@/app/components/admin/forms/UpdateRoadMapForm";
+import { getServerSession } from "next-auth";
 
 const fetchRoadmapDetail = async (id) => {
     try {
@@ -32,12 +34,13 @@ const fetchRoadmapDetail = async (id) => {
 
 const UpdateRoadMapPage = async ({params}) => {
 
+const session = await getServerSession(authOptions);
 
 const { roadmapId } = await params;
 
 const roadmap = await fetchRoadmapDetail(roadmapId);
 
-
+const userRole = session?.user?.role?.toLowerCase()
 
 return (
 
@@ -46,7 +49,7 @@ return (
       <h1 className="text-3xl font-bold m-auto text-center my-10 py-10">
         Update <b className="font-extrabold text-purple-500">Roadmap</b> / Journey
       </h1>
-      <UpdateRoadMapForm roadmap={roadmap} />
+      <UpdateRoadMapForm roadmap={roadmap} userRole={userRole} />
     </div>
 </div>
 

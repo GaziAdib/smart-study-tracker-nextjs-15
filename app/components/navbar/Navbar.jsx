@@ -30,7 +30,10 @@ const Navbar = () => {
                 session?.data?.user?.role === 'ADMIN' ?  <Link href="/admin-create-roadmap" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Create Roadmap</Link> : 
                 <Link href="/create-roadmap" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Create Roadmap</Link>
               }
-              <Link href="/" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Admin</Link>
+             {
+                session?.data?.user?.role === 'ADMIN' ?  <Link href="/admin-dashboard" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</Link> : 
+                <Link href="/student-dashboard" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</Link>
+              }
 
               {session?.data?.user == undefined &&  <>
 
