@@ -10,19 +10,19 @@ export async function DELETE(req, {params}) {
 
     const session = await getServerSession(authOptions);
 
-    const roadmapId = await params?.roadmapId || '';
+    const {topicId, roadmapId} = await params
 
     try {
-        if (session?.user?.role === 'STUDENT') {
+        if (session?.user?.role === 'ADMIN') {
   
-            await prisma.roadmap.delete({
+            await prisma.topic.delete({
                 where: {
-                    id: roadmapId,
-                    authorId: session?.user?.id
+                    id: topicId,
+                    roadmapId: roadmapId
                 }
             })
                 
-            revalidatePath('/student-dashboard');
+            revalidatePath('/admin-dashboard');
 
             return NextResponse.json({ message: 'Roadmap Deleted Successfully!' }, { status: 200 })
             

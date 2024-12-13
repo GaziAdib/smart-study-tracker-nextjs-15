@@ -28,14 +28,13 @@ const RoadmapCard = ({ roadmap }) => {
 
   const session = useSession()
   // making the api dynamic for 'Student' & 'Admin' and admin and student bot have theirn own api for delete routes
-  const userRole = session?.data?.user?.role.toLowerCase();
+  const userRole = session?.data?.user?.role?.toLowerCase();
 
   const handleDelete = async (roadmapId) => {
 
     try {
       const res = await fetch(`http://localhost:3000/api/${userRole}/roadmap/remove-roadmap/${roadmapId}`, {
         method: "DELETE",
-        cache: "no-store",
       });
 
       if (res.ok) {
@@ -43,7 +42,8 @@ const RoadmapCard = ({ roadmap }) => {
         toast.success("Roadmap removed successfully");
       } else {
         const errorData = await res.json();
-        console.log("Something went wrong in else block", errorData);
+        console.log("Something went wrong", errorData);
+        toast.success(`${errorData?.message}`);
       }
     } catch (error) {
       console.log("error", error);
