@@ -24,7 +24,7 @@ const roadmapSchema = z.object({
   description: z.string().optional(),
 });
 
-const AddTopicForm = ({roadmapId}) => {
+const AddTopicForm = ({roadmapId, userRole}) => {
 
   const router = useRouter();
 
@@ -53,7 +53,7 @@ const AddTopicForm = ({roadmapId}) => {
     // using try catch blogs wot watch for future
 
     try {
-      const response = await fetch(`/api/admin/topic/add-topic/${roadmapId}`, {
+      const response = await fetch(`/api/${userRole}/topic/add-topic/${roadmapId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json", 
@@ -65,6 +65,9 @@ const AddTopicForm = ({roadmapId}) => {
          router.push(`/roadmap-detail/${roadmapId}`)
          toast.success('New Topic Added successfully!')
          form.reset();
+      } else {
+        const errData = await response.json();
+        toast.error(`${errData?.message}`)
       }
 
     } catch (error) {

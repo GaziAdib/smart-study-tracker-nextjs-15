@@ -17,25 +17,31 @@ export async function POST(req, {params}) {
 
     try {
 
-        if(session?.user?.role === 'ADMIN') {
-            const roadmap = await prisma.topic.create({
+        const roadmapData = await prisma.roadmap.findFirst({
+            where: {
+                id: roadmapId,
+            },
+            include: {
+                author: true
+            }
+        })
+
+        if(roadmapData?.author?.id !== session?.user?.id) {
+            return NextResponse.json({ message: 'You are not Allowed to Add Topic!' }, { status: 403 })
+        }
+        
+        const roadmap = await prisma.topic.create({
                 data: {
                     title: title,
                     description: description,
                     author: {connect: {id: session?.user?.id}},
                     roadmap: {connect: {id: roadmapId}},
                 }
-            })
+        })
 
-            revalidatePath(`/roadmap-detail/${roadmapId}`);
+        revalidatePath(`/roadmap-detail/${roadmapId}`);
 
-            return NextResponse.json({ message: 'New Topic Added Successfully!', data: roadmap }, { status: 201 })
-
-        } else {
-            
-            return NextResponse.json({ message: 'You are not allowed to Add Topic!' }, { status: 403 });
-        }
-    
+        return NextResponse.json({ message: 'New Topic Added Successfully!', data: roadmap }, { status: 201 })
             
      } 
 

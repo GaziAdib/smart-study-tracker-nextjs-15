@@ -38,16 +38,16 @@ const fetchRoadmapDetail = async (id) => {
   const RoadMapDetail = async ({ params }) => {
 
     const { roadmapId } = await params;
+
     const session = await getServerSession(authOptions);
+
+    const userRole = session?.user?.role?.toLowerCase();
   
     const roadmap = await fetchRoadmapDetail(roadmapId);
   
     const { id, title, description, thumbnailUrl, category, tags, createdAt, topics } =
       roadmap || {};
   
-    // progress information for each user
-
-    //const userRoadmapBasedProgress = roadmap.progress?.find((progress) => progress.roadmapId === id)
 
     const userRoadmapBasedProgress = roadmap.progress?.find((progress) => progress?.userId === session?.user?.id)
 
@@ -126,23 +126,26 @@ const fetchRoadmapDetail = async (id) => {
               <h2 className="text-xl sm:text-2xl font-bold text-center">
                 Add a New Topic
               </h2>
-              <AddTopicForm roadmapId={id}/>
+              <AddTopicForm roadmapId={id} userRole={userRole}  />
 
-              <div className="my-5 py-5">
-              <div className="manage-tables w-full">
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center mb-5">
-                Manage Topics
-              </h2>
+             {
+               roadmap?.author?.id === session?.user?.id && <div className="my-5 py-5">
+               <div className="manage-tables w-full">
+               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center mb-5">
+                 Manage Topics
+               </h2>
 
-              <div className="mx-2">
-                <TopicsManageTable
-                  topics={topics}
-                  roadmap={roadmap}
-                  userRoadmapBasedProgress={userRoadmapBasedProgress}
-                />
+               <div className="mx-2">
+                 <TopicsManageTable
+                   topics={topics}
+                   roadmap={roadmap}
+                   userRoadmapBasedProgress={userRoadmapBasedProgress}
+                 />
+               </div>
               </div>
-            </div>
-            </div>
+             </div>
+             }
+              
             </div>
 
            

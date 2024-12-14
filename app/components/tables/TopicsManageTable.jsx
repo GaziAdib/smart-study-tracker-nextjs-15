@@ -22,11 +22,16 @@ const TopicsManageTable = ({ topics, roadmap, userRoadmapBasedProgress }) => {
 
 const handleDeleteTopic = async (topicId,roadmapId) => {
 
+   if(roadmap?.authorId !== session.data?.user?.id) {
+     toast.error('You are not allowed to delete topic!');
+     return;
+   }
+
     try {
       const res = await fetch(`http://localhost:3000/api/${userRole}/topic/remove-topic/${topicId}/${roadmapId}`, {
         method: "DELETE",
         headers: {
-            "Content-Type": "application/json",  // Specify that the content type is JSON
+            "Content-Type": "application/json",
         },
       });
 
