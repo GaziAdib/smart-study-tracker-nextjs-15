@@ -27,7 +27,7 @@ const resourceSchema = z.object({
     pdfLink: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 });
 
-const AddResourceForm = ({ topicId, roadmapId }) => {
+const AddResourceForm = ({ topicId, roadmapId, userRole }) => {
   const router = useRouter();
 
   const form = useForm({
@@ -44,8 +44,7 @@ const AddResourceForm = ({ topicId, roadmapId }) => {
 
   // onSubmit handler
   const onSubmit = async (data) => {
-    console.log("data", data);
-
+ 
     const mainData = {
         videoLink: data?.videoLink,
         driveLink: data?.driveLink,
@@ -56,7 +55,7 @@ const AddResourceForm = ({ topicId, roadmapId }) => {
     }
 
     try {
-      const response = await fetch(`/api/admin/resources/add-resource/${topicId}/${roadmapId}`, {
+      const response = await fetch(`/api/${userRole}/resources/add-resource/${topicId}/${roadmapId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +68,8 @@ const AddResourceForm = ({ topicId, roadmapId }) => {
         toast.success("Resource added successfully!");
         form.reset();
       } else {
-        toast.error("Failed to add resource!");
+        const errData = await response.json()
+        toast.error(`${errData.message}`);
       }
     } catch (error) {
       console.error("Error adding resource:", error);
